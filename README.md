@@ -1,24 +1,17 @@
 # Wisebedclient::Ruby
 
-TODO: Write a gem description
+Ruby gem to access the wisebed API via REST and websockets.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'wisebedclient-ruby'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install wisebedclient-ruby
+Not on official gem repos yet, clone the code from github.
 
 ## Usage
 
-TODO: Write usage instructions here
+For now, just do
+    $ ruby test/testapp.rb
+
+or have a look at the code and enhance the testapp with whatever you like to do
 
 ## Contributing
 
