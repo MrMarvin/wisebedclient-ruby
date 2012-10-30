@@ -13,5 +13,6 @@ end
 
 module WisebedClient
   WISEBEDBASEURL = "http://wisebed.itm.uni-luebeck.de"
+  WISEBEDAPIVERSION = "/rest/2.3/"
   
 end

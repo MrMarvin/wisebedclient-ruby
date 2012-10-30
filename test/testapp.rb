@@ -24,7 +24,11 @@ id = "uzl"
 #  ]
 # }  
 logindata = YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
+client.login!(id,logindata)
 
-puts client.login()
+# after logging in, we can see our reservations
+puts client.personal_reservations(id,Time.now,(Time.now+604800))
 
-#puts client.logout id
+puts client.logout!(id)
+# after logging out again, we cant see it...
+puts client.personal_reservations(id,Time.now,(Time.now+604800))
