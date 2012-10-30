@@ -13,7 +13,16 @@ client = WisebedClient::Wisebed.new
 id = "uzl"
 #puts client.public_reservations(id,Time.now,(Time.now+604800))
 
-# logindata = {"urnPrefix" => "uzl", "username" => "user@name", "password" => "p4zzw0rd"}
+# example:
+# logindata = {
+#  "authenticationData" => [
+#    {
+#      "urnPrefix" => "urn:wisebed:uzl1:",
+#      "username" => "user.name@host.example",
+#      "password"=> "p4zzw0rd"
+#    }
+#  ]
+# }  
 logindata = YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
 
 puts client.login()
