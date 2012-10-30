@@ -1,13 +1,21 @@
 require File.expand_path('../../lib/wisebedclient-ruby.rb', __FILE__)
+require 'YAML'
 
 client = WisebedClient::Wisebed.new
 
 # tests the iso8601 time
-puts Time.now.iso8601_no_tz
+#puts Time.now.iso8601_no_tz
 
 # prints out all testbeds
 #puts client.testbeds
 
 # gets reservations for Uni Luebeck Testbed
 id = "uzl"
-puts client.public_reservations(id,(Time.now-604800),(Time.now+604800))
+#puts client.public_reservations(id,Time.now,(Time.now+604800))
+
+# logindata = {"urnPrefix" => "uzl", "username" => "user@name", "password" => "p4zzw0rd"}
+logindata = YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
+
+puts client.login()
+
+#puts client.logout id

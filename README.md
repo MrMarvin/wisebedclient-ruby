@@ -9,6 +9,7 @@ Not on official gem repos yet, clone the code from github.
 ## Usage
 
 For now, just do
+    
     $ ruby test/testapp.rb
 
 or have a look at the code and enhance the testapp with whatever you like to do
