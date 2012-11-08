@@ -24,13 +24,15 @@ id = "uzl"
 #  ]
 # }  
 logindata = YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
-puts client.is_logged_in? id
+#puts client.is_logged_in? id
 client.login!(id,logindata)
-puts client.is_logged_in? id
+#puts client.is_logged_in? id
 
 # after logging in, we can see our reservations
-puts client.personal_reservations(id,Time.now,(Time.now+604800))
+#puts client.personal_reservations(id,Time.now,(Time.now+604800))
 
 #puts client.logout!(id)
 # after logging out again, we cant see it...
-puts client.personal_reservations(id,Time.now,(Time.now+604800))
+#puts client.personal_reservations(id,Time.now,(Time.now+604800))
+
+puts client.wise_ml(id)

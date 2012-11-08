@@ -63,6 +63,13 @@ module WisebedClient
       @getback["testbedMap"]
     end
 
+    def wise_ml(testbed_id, experiment_id = nil, json_or_xml = "json")
+      # TODO: handle xml
+      request_from_wisebed WISEBEDAPIVERSION+testbed_id+ "/experiments/" + (experiment_id ? experiment_id+"/" : "") + "network"
+      @getback
+    end
+
+
     def request_from_wisebed(url_extension)
       @getback = nil
       url = WisebedClient::WISEBEDBASEURL+url_extension
