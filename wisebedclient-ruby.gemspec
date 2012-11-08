@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 require File.expand_path('../lib/wisebedclient-ruby/version', __FILE__)
 
-
+Gem::Specification.new do |gem|
   gem.authors       = ["Marvin Frick"]
   gem.email         = ["frick@informatik.uni-luebeck.de"]
   gem.description   = %q{Ruby gem to access the wisebed API via REST and websockets}
