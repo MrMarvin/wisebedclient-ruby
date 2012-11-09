@@ -1,6 +1,6 @@
-module WisebedClient
+module Wisebed
 
-  class WisebedWebsocketClient
+  class WebsocketClient
 
     #TODO: implementieren
     
