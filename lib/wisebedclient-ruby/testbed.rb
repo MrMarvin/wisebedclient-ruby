@@ -58,5 +58,9 @@ module Wisebed
       @getback
     end
     
+    def delete_reservation
+      # TODO implement
+    end
+    
   end 
 end

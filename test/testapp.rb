@@ -21,12 +21,10 @@ tb = Wisebed::Testbed.new("uzl")
 #puts tb.wise_ml
 
 # gets reservations for Uni Luebeck Testbed
-#puts tb.is_logged_in?
 tb.login!(logindata)
 puts "logged in: "+tb.is_logged_in?.to_s
 puts tb.personal_reservations
-#puts tb.public_reservations
-puts "logged in: "+tb.is_logged_in?.to_s
-puts tb.make_reservation(Time.now, Time.now+(5*60), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
-puts "logged in: "+tb.is_logged_in?.to_s
-puts tb.personal_reservations
+
+#puts tb.make_reservation(Time.now, Time.now+(5*60), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
+
+#puts tb.personal_reservations
