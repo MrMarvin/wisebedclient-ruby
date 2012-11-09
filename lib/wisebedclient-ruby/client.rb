@@ -9,6 +9,11 @@ module Wisebed
       request_from_wisebed "testbeds"
       @getback["testbedMap"]
     end
+    
+    def experimentconfiguration= (url)
+      request_from_wisebed "experimentconfiguration?url=#{url}"
+      @getback
+    end
 
     def request_from_wisebed(url_extension)
       @getback = nil

@@ -22,9 +22,9 @@ tb = Wisebed::Testbed.new("uzl")
 
 # gets reservations for Uni Luebeck Testbed
 tb.login!(logindata)
-puts "logged in: "+tb.is_logged_in?.to_s
+# puts "logged in: "+tb.is_logged_in?.to_s
+puts tb.personal_reservations
+puts tb.make_reservation(Time.now.utc, Time.now.utc+(5*60), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
 puts tb.personal_reservations
 
-#puts tb.make_reservation(Time.now, Time.now+(5*60), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
-
-#puts tb.personal_reservations
+puts Wisebed::Client.new.experimentconfiguration="https://raw.github.com/itm/wisebed-experiments/master/packet-tracking/config.json"
