@@ -15,7 +15,7 @@ module Wisebed
       url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
       puts "debug: requesting "+url
       EventMachine.run {
-        http = EventMachine::HttpRequest.new(url).get  :dataType => "json", :head => {:cookie => @cookie}
+        http = EventMachine::HttpRequest.new(url).get :head => {:accept => "application/json", :cookie => @cookie}
         http.errback { p 'Uh oh'; EM.stop }
         http.callback {
           @getback = http.response
