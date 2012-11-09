@@ -18,9 +18,12 @@ require 'YAML'
 logindata = YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
 
 tb = Wisebed::Testbed.new("uzl")
+#puts tb.wise_ml
 
 # gets reservations for Uni Luebeck Testbed
-puts tb.is_logged_in?
-tb.login!(logindata)
-tb.logout!
+#puts tb.is_logged_in?
+puts tb.login!(logindata)
+#tb.logout!
 puts tb.personal_reservations
+#puts tb.public_reservations
+

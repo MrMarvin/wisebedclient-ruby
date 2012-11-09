@@ -10,24 +10,16 @@ module Wisebed
       @id = testbed_id
     end
 
+    def wise_ml(experiment_id = nil, json_or_xml = "json")
+      # TODO: handle xml
+      request_from_wisebed @id+ "/experiments/" + (experiment_id ? experiment_id+"/" : "") + "network"
+      @getback
+    end
+
     def login!(credentials=nil)
       @credentials = credentials if credentials
       raise "Cannot login: No credentials given!" if not @credentials
-      @getback = nil
-      url = Wisebed::BASEURL+Wisebed::APIVERSION+@id+"/login"
-      puts "debug: requesting "+url
-      EventMachine.run {
-        http = EventMachine::HttpRequest.new(url).post :body => @credentials.to_json, :head => {"content-type" => "application/json; charset=utf-8"}        
-        http.errback { p 'Uh oh'; EM.stop }
-        http.callback {
-          @cookie = http.response_header["SET_COOKIE"]
-          begin
-            @getback = JSON.parse http.response
-          rescue JSON::ParserError => e
-          end 
-          EventMachine.stop
-        }
-      }
+      post_to_wisebed @id+"/login", @credentials
       @secret_authentication_keys = @getback      
     end
 
@@ -54,12 +46,10 @@ module Wisebed
         (from ? ("from=" + from.iso8601_no_tz + "&") : "") + (to ? ("to="+to.iso8601_no_tz + "&") : "")
       @getback.nil? ? "not logged in for personal reservations" : @getback["reservations"]
     end
-
-    def wise_ml(experiment_id = nil, json_or_xml = "json")
-      # TODO: handle xml
-      request_from_wisebed @id+ "/experiments/" + (experiment_id ? experiment_id+"/" : "") + "network"
-      @getback
+    
+    def make_reservation(from, to, user_data, node_URNs)
+      
     end
-
+    
   end 
 end
