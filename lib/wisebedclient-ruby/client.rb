@@ -35,7 +35,7 @@ module Wisebed
       url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
       puts "debug: requesting "+url
       EventMachine.run {
-        http = EventMachine::HttpRequest.new(url).post :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8"}
+        http = EventMachine::HttpRequest.new(url).post :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8", :cookie => @cookie}
         http.errback { p 'Uh oh'; EM.stop }
         http.callback {
           @cookie = http.response_header["SET_COOKIE"] if http.response_header["SET_COOKIE"]

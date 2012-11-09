@@ -48,7 +48,14 @@ module Wisebed
     end
     
     def make_reservation(from, to, user_data, node_URNs)
-      
+      content = {
+        "from"     => from.iso8601_no_tz,
+        "nodeURNs" => node_URNs,
+        "to"       => to.iso8601_no_tz(),
+        "userData" => user_data # description or something
+      }
+      post_to_wisebed @id+"/reservations/create", content
+      @getback
     end
     
   end 
