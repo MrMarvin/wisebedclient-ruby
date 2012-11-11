@@ -1,6 +1,7 @@
 module Wisebed
 
   BASEURL = "http://wisebed.itm.uni-luebeck.de"
+  WSBASEURL = "ws://wisebed.itm.uni-luebeck.de"
   APIVERSION = "/rest/2.3/"
 
   class Client
@@ -12,7 +13,6 @@ module Wisebed
     
     def experimentconfiguration= (url)
       request_from_wisebed "experimentconfiguration?url=#{url}"
-      @getback
     end
 
     def request_from_wisebed(url_extension)
@@ -29,6 +29,7 @@ module Wisebed
           rescue JSON::ParserError => e
             puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
             puts STDERR, http.response.empty? ? http.response_header : http.response
+            @getback = http.response
           end 
           EventMachine.stop
           }
@@ -49,6 +50,7 @@ module Wisebed
           rescue JSON::ParserError => e
             puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
             puts STDERR, http.response.empty? ? http.response_header : http.response
+            @getback = http.response
           end 
           EventMachine.stop
         }

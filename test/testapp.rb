@@ -1,6 +1,6 @@
 require File.expand_path('../../lib/wisebedclient-ruby.rb', __FILE__)
 require 'YAML'
-
+require 'Base64'
 
 # prints out all testbeds
 #puts Wisebed::Client.new.testbeds
@@ -23,8 +23,21 @@ tb = Wisebed::Testbed.new("uzl")
 # gets reservations for Uni Luebeck Testbed
 tb.login!(logindata)
 # puts "logged in: "+tb.is_logged_in?.to_s
-puts tb.personal_reservations
-puts tb.make_reservation(Time.now, Time.now+(5*60), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
-puts tb.personal_reservations
+tb.make_reservation(Time.now, Time.now+(60*2), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
+exp_id = tb.experiments
+#puts "experiment id: "+exp_id
+Wisebed::Client.new.experimentconfiguration="https://raw.github.com/itm/wisebed-experiments/master/packet-tracking/config.json"
+wsc = Wisebed::WebsocketClient.new(exp_id,tb.cookie)
 
-puts Wisebed::Client.new.experimentconfiguration="https://raw.github.com/itm/wisebed-experiments/master/packet-tracking/config.json"
+begin
+  attach_time = Time.now
+  messages = []
+  wsc.attach {|msg| puts msg.to_s; messages << msg}
+  while true do end
+rescue Interrupt
+ensure
+  detach_time = Time.now
+  wsc.detach
+end
+
+puts "received #{messages.length} messages via websocket in #{detach_time-attach_time}"

@@ -36,7 +36,7 @@ module Wisebed
   
     def personal_reservations(from=nil, to=nil)
       public_reservations(from, to, true)
-      @getback
+      @getback["reservations"]
     end
 
     def public_reservations(from=nil, to=nil, useronly=false)
@@ -60,6 +60,16 @@ module Wisebed
     
     def delete_reservation
       # TODO implement
+    end
+    
+    def experiments(reservation_data=nil)
+      unless reservation_data
+        reservation_data = personal_reservations(Time.now, Time.now+(24*60*60)).last["data"]
+      end
+      reservation_data[0].delete("username")
+      reservation_data = {"reservations" => reservation_data}
+      post_to_wisebed @id+"/experiments", reservation_data
+      @getback.split("/").last
     end
     
   end 
