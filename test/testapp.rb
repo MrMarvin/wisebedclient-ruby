@@ -1,6 +1,5 @@
 require File.expand_path('../../lib/wisebedclient-ruby.rb', __FILE__)
 require 'YAML'
-require 'Base64'
 
 # prints out all testbeds
 #puts Wisebed::Client.new.testbeds
@@ -32,7 +31,7 @@ wsc = Wisebed::WebsocketClient.new(exp_id,tb.cookie)
 begin
   attach_time = Time.now
   messages = []
-  wsc.attach {|msg| puts msg.to_s; messages << msg}
+  wsc.attach {|msg| print "."; messages << msg}
   while true do end
 rescue Interrupt
 ensure

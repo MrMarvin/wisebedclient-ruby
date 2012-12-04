@@ -72,5 +72,5 @@ module Wisebed
       @getback.split("/").last
     end
     
-  end 
+  end
 end

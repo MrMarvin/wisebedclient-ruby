@@ -5,8 +5,8 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Marvin Frick"]
   gem.email         = ["frick@informatik.uni-luebeck.de"]
   gem.description   = %q{Ruby gem to access the wisebed API via REST and websockets}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.summary       = %q{Ruby gem to access the wisebed API via REST and websockets}
+  gem.homepage      = "https://github.com/MrMarvin/wisebedclient-ruby"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
