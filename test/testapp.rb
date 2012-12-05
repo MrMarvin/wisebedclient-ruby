@@ -1,4 +1,4 @@
-require File.expand_path('../../lib/wisebedclient-ruby.rb', __FILE__)
+require File.expand_path('../../lib/wisebedclientruby.rb', __FILE__)
 require 'YAML'
 
 # prints out all testbeds
@@ -22,6 +22,7 @@ tb = Wisebed::Testbed.new("uzl")
 # gets reservations for Uni Luebeck Testbed
 tb.login!(logindata)
 # puts "logged in: "+tb.is_logged_in?.to_s
+puts tb.public_reservations
 tb.make_reservation(Time.now, Time.now+(60*2), "test reservation from ruby client", ["urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2246"])
 exp_id = tb.experiments
 #puts "experiment id: "+exp_id

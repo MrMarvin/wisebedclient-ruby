@@ -55,7 +55,7 @@ module Wisebed
         "userData" => user_data # description or something
       }
       post_to_wisebed @id+"/reservations/create", content
-      @getback
+      raise if @getback.include? "Another reservation is in conflict with yours"        
     end
     
     def delete_reservation
