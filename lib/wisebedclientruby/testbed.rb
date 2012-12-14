@@ -35,12 +35,12 @@ module Wisebed
     end
   
     def personal_reservations(from=nil, to=nil)
+      login! if @cookie.empty?
       public_reservations(from, to, true)
       @getback["reservations"]
     end
 
     def public_reservations(from=nil, to=nil, useronly=false)
-      login! if @cookie.empty?
       # Time.iso8601 includes the timezone (+01:00), however XMLGreagorianCalendar does not parse this
       request_from_wisebed @id+"/reservations?userOnly="+useronly.to_s+"&"+
         (from ? ("from=" + from.iso8601_no_tz + "&") : "") + (to ? ("to="+to.iso8601_no_tz + "&") : "")
@@ -55,7 +55,8 @@ module Wisebed
         "userData" => user_data # description or something
       }
       post_to_wisebed @id+"/reservations/create", content
-      raise if @getback.include? "Another reservation is in conflict with yours"        
+      raise "Another reservation is in conflict with yours" if @getback.include? "Another reservation is in conflict with yours"
+      @getback
     end
     
     def delete_reservation
@@ -65,11 +66,18 @@ module Wisebed
     def experiments(reservation_data=nil)
       unless reservation_data
         reservation_data = personal_reservations(Time.now, Time.now+(24*60*60)).last["data"]
-      end
-      reservation_data[0].delete("username")
-      reservation_data = {"reservations" => reservation_data}
+        reservation_data[0].delete("username")
+        reservation_data = {"reservations" => reservation_data}
+      end            
+      puts "debug reservation_data: #{reservation_data}"
       post_to_wisebed @id+"/experiments", reservation_data
       @getback.split("/").last
+    end
+    
+    def flash(secret_keservation_key, path_to_config)
+      flash_this_json = Wisebed::Client.new.experimentconfiguration(path_to_config)
+      post_to_wisebed @id+"/experiments/"+secret_keservation_key+"/flash", flash_this_json
+      @getback
     end
     
   end

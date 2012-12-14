@@ -11,14 +11,15 @@ module Wisebed
       @getback["testbedMap"]
     end
     
-    def experimentconfiguration= (url)
+    def experimentconfiguration(url)
       request_from_wisebed "experimentconfiguration?url=#{url}"
+      @getback      
     end
 
     def request_from_wisebed(url_extension)
       @getback = nil
       url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
-      puts "debug: requesting "+url
+      #puts "debug: requesting "+url
       EventMachine.run {
         http = EventMachine::HttpRequest.new(url).get :head => {:accept => "application/json", :cookie => @cookie}
         http.errback { p 'Uh oh'; EM.stop }
@@ -27,9 +28,9 @@ module Wisebed
           begin
             @getback = JSON.parse http.response
           rescue JSON::ParserError => e
-            puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
-            puts STDERR, http.response.empty? ? http.response_header : http.response
-            puts STDERR, http.response_header
+            #puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
+            #puts STDERR, http.response.empty? ? http.response_header : http.response
+            #puts STDERR, http.response_header
             @getback = http.response
           end 
           EventMachine.stop
@@ -40,7 +41,7 @@ module Wisebed
     def post_to_wisebed(url_extension, data)
       @getback = nil
       url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
-      puts "debug: requesting "+url
+      #puts "debug: requesting "+url
       EventMachine.run {
         http = EventMachine::HttpRequest.new(url).post :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8", :cookie => @cookie}
         http.errback { p 'Uh oh'; EM.stop }
@@ -49,8 +50,8 @@ module Wisebed
           begin
             @getback = JSON.parse http.response
           rescue JSON::ParserError => e
-            puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
-            puts STDERR, http.response.empty? ? http.response_header : http.response
+            #puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
+            #puts STDERR, http.response.empty? ? http.response_header : http.response
             @getback = http.response
           end 
           EventMachine.stop

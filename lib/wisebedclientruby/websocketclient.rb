@@ -1,29 +1,24 @@
 module Wisebed
 
   class WebsocketClient < Client
+    require 'em-websocket-client'
 
-    def initialize(testbed_id, cookie)
-      @id = testbed_id
+    def initialize(exp_id, cookie)
+      @exp_id = exp_id
       @cookie = cookie
       @stop = false
     end
     
     def attach(&message_handler)
       EventMachine.run {
-        # do not enable any headers... em-http-request will breake! Really!
-        header = {#:connection => "Upgrade",
-                  # :upgrade => "websocket",
-                  :cookie => @cookie,
-                   #:origin => Wisebed::BASEURL,
-                   #"Sec-WebSocket-Version" => 13,
-                   #"Sec-WebSocket-Key" => Base64.urlsafe_encode64(Time.now.to_s) 
-                  }
-        http = EventMachine::HttpRequest.new(Wisebed::WSBASEURL+"/ws/experiments/"+@id).get :timeout => 0, :head => header
 
-          http.errback { puts "oops" }
+        #puts "debug: connecting to: #{Wisebed::WSBASEURL+"/ws/experiments/"+@exp_id}"
+        http = EventMachine::WebSocketClient.connect(Wisebed::WSBASEURL+"/ws/experiments/"+@exp_id)
+
+          http.errback { puts "WEBSOCKET CONNECTION ERROR" }
 
           http.callback {
-            puts "WebSocket connected!"
+            #puts "debug: WebSocket connected!"
           }
           
           http.stream { |msg|
