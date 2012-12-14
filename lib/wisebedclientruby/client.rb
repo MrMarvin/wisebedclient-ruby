@@ -71,8 +71,8 @@ module Wisebed
           begin
             @getback = JSON.parse http.response
           rescue JSON::ParserError => e
-            puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
-            puts STDERR, http.response.empty? ? http.response_header : http.response
+            #puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
+            #puts STDERR, http.response.empty? ? http.response_header : http.response
             @getback = http.response
           end 
           EventMachine.stop

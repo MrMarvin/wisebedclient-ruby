@@ -69,7 +69,6 @@ module Wisebed
         reservation_data[0].delete("username")
         reservation_data = {"reservations" => reservation_data}
       end            
-      puts "debug reservation_data: #{reservation_data}"
       post_to_wisebed @id+"/experiments", reservation_data
       @getback.split("/").last
     end
