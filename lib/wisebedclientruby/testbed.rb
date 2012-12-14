@@ -59,8 +59,8 @@ module Wisebed
       @getback
     end
     
-    def delete_reservation
-      # TODO implement
+    def delete_reservation(reservation_hash)
+      delete_from_wisebed @id+"/reservations", reservation_hash
     end
     
     def experiments(reservation_data=nil)
