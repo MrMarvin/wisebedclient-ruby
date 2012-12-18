@@ -23,7 +23,7 @@ namespace :reservation do
     tb = Wisebed::Testbed.new("uzl")
     logindata = YAML.load_file(File.expand_path('../test/credentials.yml', __FILE__))
     tb.login!(logindata)
-    tb.delete_reservation(JSON.parse(ENV['res']))        
+    puts tb.delete_reservation(JSON.parse(ENV['res']))        
   end
       
 end

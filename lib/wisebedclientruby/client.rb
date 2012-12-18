@@ -32,8 +32,7 @@ module Wisebed
             #puts STDERR, http.response.empty? ? http.response_header : http.response
             #puts STDERR, http.response_header
             @getback = http.response
-          end 
-          puts "[#{Process.pid.to_s}] stopping EM!"
+          end           
           EventMachine.stop
           }
         }
@@ -55,7 +54,6 @@ module Wisebed
             #puts STDERR, http.response.empty? ? http.response_header : http.response
             @getback = http.response
           end 
-          puts "[#{Process.pid.to_s}] stopping EM!"
           EventMachine.stop
         }
       }      
@@ -77,7 +75,6 @@ module Wisebed
             #puts STDERR, http.response.empty? ? http.response_header : http.response
             @getback = http.response
           end 
-          puts "[#{Process.pid.to_s}] stopping EM!"
           EventMachine.stop
         }
       }      
