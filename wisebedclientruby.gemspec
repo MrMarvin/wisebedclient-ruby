@@ -7,7 +7,10 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Ruby gem to access the wisebed API via REST and websockets}
   gem.summary       = %q{Ruby gem to access the wisebed API via REST and websockets}
   gem.homepage      = "https://github.com/MrMarvin/wisebedclient-ruby"
-
+  
+  gem.add_dependency 'simpleblockingwebsocketclient'
+  gem.add_dependency 'httparty'
+  
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})

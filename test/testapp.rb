@@ -1,5 +1,5 @@
 require File.expand_path('../../lib/wisebedclientruby.rb', __FILE__)
-require 'YAML'
+#require 'YAML'
 
 # prints out all testbeds
 #puts Wisebed::Client.new.testbeds
@@ -20,19 +20,20 @@ tb = Wisebed::Testbed.new("uzl")
 #puts tb.wise_ml
 
 # gets reservations for Uni Luebeck Testbed
+puts "logging in"
 tb.login!(logindata)
-# puts "logged in: "+tb.is_logged_in?.to_s
-#tb.public_reservations
 all_nodes_for_packet_tracking = ["urn:wisebed:uzl1:0x211c","urn:wisebed:uzl1:0x2114","urn:wisebed:uzl1:0x2104","urn:wisebed:uzl1:0x2118","urn:wisebed:uzl1:0x2120","urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2140","urn:wisebed:uzl1:0x2108","urn:wisebed:uzl1:0x2100","urn:wisebed:uzl1:0x210c","urn:wisebed:uzl1:0x2124","urn:wisebed:uzl1:0x2134","urn:wisebed:uzl1:0x2130","urn:wisebed:uzl1:0x212c","urn:wisebed:uzl1:0x2128","urn:wisebed:uzl1:0x2138","urn:wisebed:uzl1:0x213c","urn:wisebed:uzl1:0x2110"]
-puts "Making reservation:"
-puts exp_reservation = tb.make_reservation(Time.now, Time.now+(60), "test reservation from ruby client", all_nodes_for_packet_tracking)
+exp_reservation = tb.make_reservation(Time.now, Time.now+(60), "test reservation from ruby client", all_nodes_for_packet_tracking)
+puts "reservation: #{exp_reservation}"
 experiment_id = tb.experiments(exp_reservation)
+puts "secret experiment_id: #{experiment_id}"
 tb.flash(experiment_id,"https://raw.github.com/itm/wisebed-experiments/master/packet-tracking/config.json")
 wsc = Wisebed::WebsocketClient.new(experiment_id)
 
 begin
   attach_time = Time.now
   messages = []
+  puts "opening websocket (might take some time before all nodes are flashed!)"
   wsc.attach {|msg| print "."; messages << msg}
   while true do end
 rescue Interrupt

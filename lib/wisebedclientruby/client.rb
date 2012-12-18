@@ -5,79 +5,72 @@ module Wisebed
   APIVERSION = "/rest/2.3/"
 
   class Client
+    require 'httparty'
+    include HTTParty
+    base_uri Wisebed::BASEURL+Wisebed::APIVERSION
 
     def testbeds
-      request_from_wisebed "testbeds"
-      @getback["testbedMap"]
+      request_from_wisebed("testbeds")["testbedMap"]
     end
     
     def experimentconfiguration(url)
-      request_from_wisebed "experimentconfiguration?url=#{url}"
-      @getback      
+      request_from_wisebed("experimentconfiguration?url=#{url}")
     end
 
     def request_from_wisebed(url_extension)
-      @getback = nil
-      url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
-      puts "debug: requesting "+url
-      EventMachine.run {
-        http = EventMachine::HttpRequest.new(url).get :head => {:accept => "application/json", :cookie => @cookie}
-        http.errback { puts "[#{Process.pid.to_s}] error HttpRequesting: #{url}";}
-        http.callback {
-          @getback = http.response
-          begin
-            @getback = JSON.parse http.response
-          rescue JSON::ParserError => e
-            #puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
-            #puts STDERR, http.response.empty? ? http.response_header : http.response
-            #puts STDERR, http.response_header
-            @getback = http.response
-          end           
-          EventMachine.stop
-          }
-        }
+      url_extension = "/#{url_extension}" unless url_extension[0] == "/"
+      #puts "debug: requesting "+self.class.base_uri+url_extension
+      if @cookie
+        headers = {'Cookie' => @cookie}
+      else
+        headers = {}
+      end      
+      res = self.class.get(url_extension, :headers => headers)
+      begin        
+        JSON.parse(res)
+      rescue
+        res
+      end
+    
     end
+
     
     def post_to_wisebed(url_extension, data)
-      @getback = nil
-      url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
-      #puts "debug: requesting "+url
-      EventMachine.run {
-        http = EventMachine::HttpRequest.new(url).post :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8", :cookie => @cookie}
-        http.errback { puts "[#{Process.pid.to_s}] error post-HttpRequesting: #{url}" }
-        http.callback {
-          @cookie = http.response_header["SET_COOKIE"] if http.response_header["SET_COOKIE"]
-          begin
-            @getback = JSON.parse http.response
-          rescue JSON::ParserError => e
-            #puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
-            #puts STDERR, http.response.empty? ? http.response_header : http.response
-            @getback = http.response
-          end 
-          EventMachine.stop
-        }
-      }      
+      url_extension = "/#{url_extension}" unless url_extension[0] == "/"
+      #puts "debug: posting "+self.class.base_uri+url_extension
+      #puts "debug: with data: #{data.to_json}"
+      if @cookie
+        headers = {'Cookie' => @cookie}
+      else
+        headers = {}
+      end
+      headers.merge!({'Content-Type' => "application/json; charset=utf-8"})
+      res = self.class.post(url_extension, :body => data.to_json, :headers => headers)
+      @cookie = res.headers['Set-Cookie']
+      begin        
+        JSON.parse(res)
+      rescue
+        res
+      end
+      
     end
     
     def delete_from_wisebed(url_extension, data)
-      @getback = nil
-      url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
-      puts "debug: DELETE "+url
-      EventMachine.run {
-        http = EventMachine::HttpRequest.new(url).delete :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8", :cookie => @cookie}
-        http.errback { puts "[#{Process.pid.to_s}] error delete-HttpRequesting: #{url}" }
-        http.callback {
-          @cookie = http.response_header["SET_COOKIE"] if http.response_header["SET_COOKIE"]
-          begin
-            @getback = JSON.parse http.response
-          rescue JSON::ParserError => e
-            #puts STDERR, "Could not parse response: No valid JSON.\nException message given: " + e.message
-            #puts STDERR, http.response.empty? ? http.response_header : http.response
-            @getback = http.response
-          end 
-          EventMachine.stop
-        }
-      }      
+      url_extension = "/#{url_extension}" unless url_extension[0] == "/"
+      #puts "debug: deleting "+self.class.base_uri+url_extension
+      if @cookie
+        headers = {'Cookie' => @cookie}
+      else
+        headers = {}
+      end
+      headers.merge!({'Content-Type' => "application/json; charset=utf-8"})
+      res = self.class.delete(url_extension, :body => data.to_json, :headers => headers)
+      begin        
+        JSON.parse(res)
+      rescue
+        res
+      end
+      
     end
     
   end
