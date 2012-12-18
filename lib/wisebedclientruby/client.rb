@@ -28,8 +28,8 @@ module Wisebed
       res = self.class.get(url_extension, :headers => headers)
       begin        
         JSON.parse(res)
-      rescue
-        res
+      rescue MultiJson::DecodeError => e
+        res.body
       end
     
     end
@@ -49,10 +49,9 @@ module Wisebed
       @cookie = res.headers['Set-Cookie']
       begin        
         JSON.parse(res)
-      rescue
-        res
+      rescue MultiJson::DecodeError => e
+        res.body
       end
-      
     end
     
     def delete_from_wisebed(url_extension, data)
@@ -67,10 +66,9 @@ module Wisebed
       res = self.class.delete(url_extension, :body => data.to_json, :headers => headers)
       begin        
         JSON.parse(res)
-      rescue
-        res
+      rescue MultiJson::DecodeError => e
+        res.body
       end
-      
     end
     
   end

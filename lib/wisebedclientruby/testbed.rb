@@ -51,7 +51,8 @@ module Wisebed
         "userData" => user_data # description or something
       }
       res = post_to_wisebed(@id+"/reservations/create", content)
-      #raise "Another reservation is in conflict with yours" if res.include? "Another reservation is in conflict with yours"
+      raise "Another reservation is in conflict with yours" if res.include? "Another reservation is in conflict with yours"
+      res
     end
     
     def delete_reservation(reservation_hash)
@@ -64,13 +65,13 @@ module Wisebed
         reservation_data[0].delete("username")
         reservation_data = {"reservations" => reservation_data}
       end            
-      res = post_to_wisebed @id+"/experiments", reservation_data
+      res = post_to_wisebed(@id+"/experiments", reservation_data)
       res.split("/").last
     end
     
     def flash(secret_keservation_key, path_to_config)
       flash_this_json = Wisebed::Client.new.experimentconfiguration(path_to_config)
-      post_to_wisebed @id+"/experiments/"+secret_keservation_key+"/flash", flash_this_json     
+      post_to_wisebed(@id+"/experiments/"+secret_keservation_key+"/flash", flash_this_json)
     end
     
   end
