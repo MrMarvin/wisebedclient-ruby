@@ -19,10 +19,10 @@ module Wisebed
     def request_from_wisebed(url_extension)
       @getback = nil
       url = Wisebed::BASEURL+Wisebed::APIVERSION+url_extension
-      #puts "debug: requesting "+url
+      puts "debug: requesting "+url
       EventMachine.run {
         http = EventMachine::HttpRequest.new(url).get :head => {:accept => "application/json", :cookie => @cookie}
-        http.errback { p 'Uh oh'; EM.stop }
+        http.errback { puts "[#{Process.pid.to_s}] error HttpRequesting: #{url}";}
         http.callback {
           @getback = http.response
           begin
@@ -33,6 +33,7 @@ module Wisebed
             #puts STDERR, http.response_header
             @getback = http.response
           end 
+          puts "[#{Process.pid.to_s}] stopping EM!"
           EventMachine.stop
           }
         }
@@ -44,7 +45,7 @@ module Wisebed
       #puts "debug: requesting "+url
       EventMachine.run {
         http = EventMachine::HttpRequest.new(url).post :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8", :cookie => @cookie}
-        http.errback { p 'Uh oh'; EM.stop }
+        http.errback { puts "[#{Process.pid.to_s}] error post-HttpRequesting: #{url}" }
         http.callback {
           @cookie = http.response_header["SET_COOKIE"] if http.response_header["SET_COOKIE"]
           begin
@@ -54,6 +55,7 @@ module Wisebed
             #puts STDERR, http.response.empty? ? http.response_header : http.response
             @getback = http.response
           end 
+          puts "[#{Process.pid.to_s}] stopping EM!"
           EventMachine.stop
         }
       }      
@@ -65,7 +67,7 @@ module Wisebed
       puts "debug: DELETE "+url
       EventMachine.run {
         http = EventMachine::HttpRequest.new(url).delete :body => data.to_json, :head => {"content-type" => "application/json; charset=utf-8", :cookie => @cookie}
-        http.errback { p 'Uh oh'; EM.stop }
+        http.errback { puts "[#{Process.pid.to_s}] error delete-HttpRequesting: #{url}" }
         http.callback {
           @cookie = http.response_header["SET_COOKIE"] if http.response_header["SET_COOKIE"]
           begin
@@ -75,6 +77,7 @@ module Wisebed
             #puts STDERR, http.response.empty? ? http.response_header : http.response
             @getback = http.response
           end 
+          puts "[#{Process.pid.to_s}] stopping EM!"
           EventMachine.stop
         }
       }      
