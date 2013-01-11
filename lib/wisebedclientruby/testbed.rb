@@ -69,9 +69,8 @@ module Wisebed
       res.split("/").last
     end
     
-    def flash(secret_keservation_key, flash_config)
+    def flash(secret_keservation_key, flash_this_json)
       post_to_wisebed(@id+"/experiments/"+secret_keservation_key+"/flash", flash_this_json)
-      flash_this_json
     end
     
   end

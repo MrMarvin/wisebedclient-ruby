@@ -27,7 +27,7 @@ exp_reservation = tb.make_reservation(Time.now, Time.now+(60), "test reservation
 puts "reservation: #{exp_reservation}"
 experiment_id = tb.experiments(exp_reservation)
 puts "secret experiment_id: #{experiment_id}"
-flash_this_json = Wisebed::Client.new.experimentconfiguration(path_to_config)
+flash_this_json = Wisebed::Client.new.experimentconfiguration("https://raw.github.com/itm/wisebed-experiments/master/packet-tracking/config.json")
 tb.flash(experiment_id,flash_this_json)
 wsc = Wisebed::WebsocketClient.new(experiment_id)
 
