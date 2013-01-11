@@ -27,8 +27,8 @@ module Wisebed
       end      
       res = self.class.get(url_extension, :headers => headers)
       begin        
-        JSON.parse(res)
-      rescue MultiJson::DecodeError => e
+        JSON.parse(res.body)
+      rescue JSON::ParserError => e
         res.body
       end
     
@@ -46,10 +46,10 @@ module Wisebed
       end
       headers.merge!({'Content-Type' => "application/json; charset=utf-8"})
       res = self.class.post(url_extension, :body => data.to_json, :headers => headers)
-      @cookie = res.headers['Set-Cookie']
+      @cookie = res.headers['Set-Cookie'] if res.headers['Set-Cookie']
       begin        
-        JSON.parse(res)
-      rescue MultiJson::DecodeError => e
+        JSON.parse(res.body)
+      rescue JSON::ParserError => e
         res.body
       end
     end
@@ -65,8 +65,8 @@ module Wisebed
       headers.merge!({'Content-Type' => "application/json; charset=utf-8"})
       res = self.class.delete(url_extension, :body => data.to_json, :headers => headers)
       begin        
-        JSON.parse(res)
-      rescue MultiJson::DecodeError => e
+        JSON.parse(res.body)
+      rescue JSON::ParserError => e
         res.body
       end
     end

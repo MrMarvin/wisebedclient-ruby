@@ -6,6 +6,11 @@ task :test_app do
   require File.expand_path('../test/testapp.rb', __FILE__)
 end
 
+desc "runs irb with this lib loaded"
+task :c do
+  sh "irb" " -r#{File.expand_path('../lib/wisebedclientruby.rb', __FILE__)}"
+end
+
 namespace :reservation do
   
   desc "lists current reservations on uzl"

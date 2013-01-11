@@ -69,9 +69,9 @@ module Wisebed
       res.split("/").last
     end
     
-    def flash(secret_keservation_key, path_to_config)
-      flash_this_json = Wisebed::Client.new.experimentconfiguration(path_to_config)
+    def flash(secret_keservation_key, flash_config)
       post_to_wisebed(@id+"/experiments/"+secret_keservation_key+"/flash", flash_this_json)
+      flash_this_json
     end
     
   end
