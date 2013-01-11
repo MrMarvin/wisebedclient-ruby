@@ -1,4 +1,4 @@
-require 'JSON'
+require 'json'
 require 'time' # for easy iso8601 format
 
 class Time
