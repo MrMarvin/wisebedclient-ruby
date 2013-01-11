@@ -18,6 +18,7 @@ module Wisebed
       @credentials = credentials if credentials
       raise "Cannot login: No credentials given!" if not @credentials
       res = post_to_wisebed @id+"/login", @credentials
+      raise SecurityError, "could not log into #{@id}: wrong username/password" if res.include? "Authentication failed"
       @secret_authentication_keys = res
     end
 

@@ -4,7 +4,7 @@ require File.expand_path('../../lib/wisebedclientruby.rb', __FILE__)
 # prints out all testbeds
 #puts Wisebed::Client.new.testbeds
 
-# example:
+#example:
 # logindata = {
 #  "authenticationData" => [
 #    {
@@ -13,7 +13,7 @@ require File.expand_path('../../lib/wisebedclientruby.rb', __FILE__)
 #      "password"=> "p4zzw0rd"
 #    }
 #  ]
-# }  
+# }
 logindata = YAML.load_file(File.expand_path('../credentials.yml', __FILE__))
 
 tb = Wisebed::Testbed.new("uzl")
@@ -21,7 +21,12 @@ tb = Wisebed::Testbed.new("uzl")
 
 # gets reservations for Uni Luebeck Testbed
 puts "logging in"
-tb.login!(logindata)
+begin
+  tb.login!(logindata)
+rescue SecurityError => e
+  puts e.message
+  exit
+end
 all_nodes_for_packet_tracking = ["urn:wisebed:uzl1:0x211c","urn:wisebed:uzl1:0x2114","urn:wisebed:uzl1:0x2104","urn:wisebed:uzl1:0x2118","urn:wisebed:uzl1:0x2120","urn:wisebed:uzl1:0x2144","urn:wisebed:uzl1:0x2140","urn:wisebed:uzl1:0x2108","urn:wisebed:uzl1:0x2100","urn:wisebed:uzl1:0x210c","urn:wisebed:uzl1:0x2124","urn:wisebed:uzl1:0x2134","urn:wisebed:uzl1:0x2130","urn:wisebed:uzl1:0x212c","urn:wisebed:uzl1:0x2128","urn:wisebed:uzl1:0x2138","urn:wisebed:uzl1:0x213c","urn:wisebed:uzl1:0x2110"]
 exp_reservation = tb.make_reservation(Time.now, Time.now+(60), "test reservation from ruby client", all_nodes_for_packet_tracking)
 puts "reservation: #{exp_reservation}"
