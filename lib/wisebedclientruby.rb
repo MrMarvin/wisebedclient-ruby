@@ -15,5 +15,4 @@ module Wisebed
   end
 end
 
-
-Dir[File.dirname(__FILE__) + '/wisebedclientruby/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/wisebedclientruby/*.rb'].sort.each { |file| require file }

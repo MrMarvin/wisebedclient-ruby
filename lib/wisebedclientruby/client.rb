@@ -2,7 +2,7 @@ module Wisebed
 
   BASEURL = "http://wisebed.itm.uni-luebeck.de"
   WSBASEURL = "ws://wisebed.itm.uni-luebeck.de"
-  APIVERSION = "/rest/2.3/"
+  APIVERSION = "/rest/2.3"
 
   class Client
     require 'httparty'
